@@ -17,42 +17,52 @@ std::string get_file_contents(const char* filename)
 	throw(errno);
 }
 
+//Init shader
 Shader::Shader(const char* vertexFile, const char* fragmentFile)
 {
+	//Get contents of vertex and fargment files
 	std::string vertexCode = get_file_contents(vertexFile);
 	std::string fragmentCode = get_file_contents(fragmentFile);
 
+	//convert to GL usable string
 	const char* vertexSource = vertexCode.c_str();
 	const char* fragmentSource = fragmentCode.c_str();
 
+	//Init vertex shader
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	glCompileShader(vertexShader);
 	compileErrors(vertexShader, "VERTEX");
 
+	//Init fragment shader
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 	glCompileShader(fragmentShader);
 	compileErrors(fragmentShader, "FRAGMENT");
 
+	//Create the shader program
 	ID = glCreateProgram();
 
+	//Attach the shaders to the shader program
 	glAttachShader(ID, vertexShader);
 	glAttachShader(ID, fragmentShader);
 
 	glLinkProgram(ID);
 	compileErrors(ID, "PROGRAM");
 
+	//Clean-up
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
 }
 
+//Tell the renderer to use this shader
 void Shader::Activate()
 {
 	glUseProgram(ID);
 }
 
+//Delete the shader
 void Shader::Delete()
 {
 	glDeleteProgram(ID);

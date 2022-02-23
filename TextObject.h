@@ -12,6 +12,7 @@ class TextObject
 		string text;
 		float x, y, scale;
 		float r, g, b;
+		string id;
 		TextObject(string text, float x, float y, float scale, float r, float g, float b);
 };
 #endif

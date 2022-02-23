@@ -164,9 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="default.frag" />
+    <None Include="Scripts\Main.lua" />
     <None Include="Text.frag" />
     <None Include="Text.vert" />
-    <None Include="VideoExample.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GUIButton.h" />

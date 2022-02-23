@@ -19,6 +19,7 @@ class GUIButton
 	public:
 		//Event
 		std::string onClickName;
+		std::string id;
 
 		//Functions
 		GUIButton(float inpX, float inpY, float inpWidth, float inpHeight, float inpR, float inpG, float inpB, std::string inpOnClick);
@@ -34,6 +35,9 @@ class GUIButton
 		float r;
 		float g;
 		float b;
+
+		std::string rect;
+
 	private:
 		void DoClick();
 };

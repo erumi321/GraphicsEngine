@@ -22,6 +22,9 @@
     <Filter Include="Resource Files\Fonts">
       <UniqueIdentifier>{ac6c3d9f-4866-4d5d-8fa7-8af28c878938}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Scripts">
+      <UniqueIdentifier>{0d926e40-b245-4571-8fc2-e0beadac2c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -70,14 +73,14 @@
     <None Include="default.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="VideoExample.lua">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="Text.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Text.frag">
       <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Scripts\Main.lua">
+      <Filter>Resource Files\Scripts</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
