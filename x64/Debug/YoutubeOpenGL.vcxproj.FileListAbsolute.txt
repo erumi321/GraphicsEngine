@@ -1,1 +1,2 @@
 D:\Users\erumi\source\repos\YoutubeOpenGL\x64\Debug\GraphicsEngine.exe
+D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\GraphicsEngine.exe

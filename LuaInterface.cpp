@@ -43,3 +43,4 @@ void LuaInterface::AddFunction(string name, lua_CFunction func)
 {
 	lua_register(L, name.c_str(), func);
 }
+

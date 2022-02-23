@@ -46,13 +46,13 @@ void GUIButton::DoClick()
 	{
 
 		lua_newtable(l.L);
-		lua_pushinteger(l.L, x);         // xpos = 50
+		lua_pushinteger(l.L, x);
 		lua_setfield(l.L, -2, "x");
-		lua_pushinteger(l.L, y);         // ypos = 80
+		lua_pushinteger(l.L, y);
 		lua_setfield(l.L, -2, "y");
-		lua_pushinteger(l.L, width);         // xpos = 50
+		lua_pushinteger(l.L, width);
 		lua_setfield(l.L, -2, "width");
-		lua_pushinteger(l.L, height);         // ypos = 80
+		lua_pushinteger(l.L, height);
 		lua_setfield(l.L, -2, "height");
 		lua_call(l.L, 1, 0);
 	}

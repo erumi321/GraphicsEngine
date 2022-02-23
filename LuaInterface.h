@@ -1,6 +1,7 @@
 #ifndef MY_LUA_INTERFACE_H
 #define MY_LUA_INTERFACE_H
 
+#include<vector>
 extern "C"
 {
 #include "lua542/include/lua.h";

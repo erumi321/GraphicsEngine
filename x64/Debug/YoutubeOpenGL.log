@@ -1,10 +1,31 @@
 ﻿D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (YoutubeOpenGL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  GUIButton.cpp
-D:\Users\erumi\source\repos\YoutubeOpenGL\GUIButton.h(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-D:\Users\erumi\source\repos\YoutubeOpenGL\LuaInterface.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-D:\Users\erumi\source\repos\YoutubeOpenGL\GUIButton.cpp(27,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-D:\Users\erumi\source\repos\YoutubeOpenGL\GUIButton.cpp(49,24): warning C4244: 'argument': conversion from 'float' to 'lua_Integer', possible loss of data
-D:\Users\erumi\source\repos\YoutubeOpenGL\GUIButton.cpp(51,24): warning C4244: 'argument': conversion from 'float' to 'lua_Integer', possible loss of data
-D:\Users\erumi\source\repos\YoutubeOpenGL\GUIButton.cpp(53,24): warning C4244: 'argument': conversion from 'float' to 'lua_Integer', possible loss of data
-D:\Users\erumi\source\repos\YoutubeOpenGL\GUIButton.cpp(55,24): warning C4244: 'argument': conversion from 'float' to 'lua_Integer', possible loss of data
-  YoutubeOpenGL.vcxproj -> D:\Users\erumi\source\repos\YoutubeOpenGL\x64\Debug\GraphicsEngine.exe
+  main.cpp
+D:\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+D:\Users\erumi\source\repos\GraphicsEngine\Libraries\include\glad\glad.h(32): message : see previous definition of 'APIENTRY'
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(10,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\GUIButton.h(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\LuaInterface.h(7,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(37,11): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(83,25): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(83,19): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(224,40): warning C4244: 'argument': conversion from 'float' to 'GLsizeiptr', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(225,40): warning C4244: 'argument': conversion from 'float' to 'GLsizeiptr', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(226,40): warning C4244: 'argument': conversion from 'float' to 'GLsizeiptr', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(237,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(440,24): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(context.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(init.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(input.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(window.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\glfw3.pdb'; linking object as if no debug info
+  YoutubeOpenGL.vcxproj -> D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\GraphicsEngine.exe

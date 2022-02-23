@@ -19,6 +19,9 @@
     <Filter Include="Resource Files\Textures">
       <UniqueIdentifier>{56c988ef-1c4c-4efe-9723-d1eb628581b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Fonts">
+      <UniqueIdentifier>{ac6c3d9f-4866-4d5d-8fa7-8af28c878938}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -54,6 +57,9 @@
     <ClCompile Include="LuaInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="default.vert">
@@ -66,6 +72,12 @@
     </None>
     <None Include="VideoExample.lua">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="Text.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Text.frag">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -93,5 +105,13 @@
     <ClInclude Include="LuaInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Fonts\FreeSans.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>
