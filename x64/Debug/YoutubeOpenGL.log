@@ -1,2 +1,18 @@
 ﻿D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (YoutubeOpenGL.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  main.cpp
+D:\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+D:\Users\erumi\source\repos\GraphicsEngine\Libraries\include\glad\glad.h(32): message : see previous definition of 'APIENTRY'
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(11,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\GUIButton.h(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\LuaInterface.h(7,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(40,11): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(107,25): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(107,19): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(280,40): warning C4244: 'argument': conversion from 'float' to 'GLsizeiptr', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(281,40): warning C4244: 'argument': conversion from 'float' to 'GLsizeiptr', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(282,40): warning C4244: 'argument': conversion from 'float' to 'GLsizeiptr', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(292,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(315,12): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(818,24): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
+D:\Users\erumi\source\repos\GraphicsEngine\main.cpp(826): warning C4715: 'initText': not all control paths return a value
   YoutubeOpenGL.vcxproj -> D:\Users\erumi\source\repos\GraphicsEngine\x64\Debug\GraphicsEngine.exe

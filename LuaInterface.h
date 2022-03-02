@@ -31,5 +31,10 @@ class LuaInterface
 		void Close();
 
 		void AddFunction(string name, lua_CFunction func);
+
+		bool CheckType(int index, int type);
+
+	private:
+		bool CheckType_int(int index, int type);
 };
 #endif

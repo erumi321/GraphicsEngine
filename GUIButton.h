@@ -6,7 +6,7 @@ extern "C"
 #include "lua542/include/lauxlib.h"
 #include "lua542/include/lualib.h"
 }
-
+#include"LuaTable.h"
 #ifdef _WIN32
 #pragma comment(lib, "lua542/liblua54.a")
 #endif
@@ -20,9 +20,10 @@ class GUIButton
 		//Event
 		std::string onClickName;
 		std::string id;
+		LuaTable args;
 
 		//Functions
-		GUIButton(float inpX, float inpY, float inpWidth, float inpHeight, float inpR, float inpG, float inpB, std::string inpOnClick);
+		GUIButton(float inpX, float inpY, float inpWidth, float inpHeight, float inpR, float inpG, float inpB, std::string inpOnClick, LuaTable args);
 		void CheckClick(float inpX, float inpY);
 		float GetDrawParameters();
 

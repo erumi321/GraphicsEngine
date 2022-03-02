@@ -46,3 +46,15 @@ void LuaInterface::AddFunction(string name, lua_CFunction func)
 	lua_register(L, name.c_str(), func);
 }
 
+bool LuaInterface::CheckType_int(int index, int type)
+{
+	luaL_checktype(L, index, type);
+
+	return true;
+}
+
+//Make this public and use the internal function so we get a true or false value and not just true returned
+bool LuaInterface::CheckType(int index, int type)
+{
+	return (CheckType_int(index, type) == true);
+}

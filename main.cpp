@@ -10,7 +10,9 @@
 #include <iterator>
 #include <vector>;
 #include<tchar.h>
+#include <unordered_map>
 #include <ft2build.h>
+#include <map>
 #include FT_FREETYPE_H 
 
 #include<glm/glm.hpp>
@@ -46,10 +48,15 @@ extern "C"
 #ifdef _WIN64
 #pragma comment(lib, "lua542/liblua54.a")
 #endif
+#include"LuaTable.h"
+#include<LuaBridge/LuaBridge.h>
 
 using namespace std;
+using namespace luabridge;
 
 GLFWwindow* window;
+//Init LuaInterface in the global so that other scripts can use it
+LuaInterface l;
 
 //Debug Purposes
 void myPrint(string s)
@@ -144,6 +151,27 @@ struct Character {
 };
 
 std::map<char, Character> Characters;
+
+std::unordered_map<std::string, luabridge::LuaRef> getKeyValueMap(const luabridge::LuaRef& table)
+{
+	std::unordered_map<std::string, LuaRef> result;
+	if (table.isNil()) { return result; }
+
+	auto L = table.state();
+	push(L, table); // push table
+
+	lua_pushnil(L);  // push nil, so lua_next removes it from stack and puts (k, v) on stack
+	while (lua_next(L, -2) != 0) { // -2, because we have table at -1
+		if (lua_isstring(L, -2)) { // only store stuff with string keys
+			result.emplace(lua_tostring(L, -2), LuaRef::fromStack(L, -1));
+		}
+		lua_pop(L, 1); // remove value, keep key for lua_next
+	}
+
+	lua_pop(L, 1); // pop table
+	return result;
+}
+
 
 //The actual computations to render text, takes a VAO and VBO for rendering purposes
 void RenderText(Shader& s, VAO VAO, VBO VBO, std::string text, float x, float y, float scale, glm::vec3 color)
@@ -270,6 +298,62 @@ void renderObjects(Shader shaderProgram)
 	EBO1.Delete();
 }
 
+LuaTable getLuaTable(lua_State* L, int index)
+{
+	map<string, LuaObject> objs;
+	map<string, LuaTable> tabs;
+	lua_pushnil(L);  /* first key */
+	while (lua_next(L, index) != 0) {
+		/* uses 'key' (at index -2) and 'value' (at index -1) */
+		int valueType = lua_type(L, index + 2);
+		int keyType = lua_type(L, index + 1);
+
+		string key = "";
+
+		if (keyType == LUA_TNUMBER)
+		{
+			int num = lua_tonumber(L, index + 1);
+
+			// declaring output string stream
+			ostringstream str1;
+
+			// Sending a number as a stream into output
+			// string
+			str1 << num;
+
+			// the str() converts number into string
+			key = str1.str();
+		}
+		else {
+			key = lua_tostring(L, index + 1);
+
+		}
+
+		if (valueType != LUA_TTABLE)
+		{
+			string value = lua_tostring(L, index + 2);
+			LuaObject newObj(value, valueType);
+
+			objs.insert(pair<string, LuaObject>(key, newObj));
+
+		}
+		else
+		{
+			LuaTable childTable = getLuaTable(L, index + 2);
+
+			tabs.insert(pair<string, LuaTable>(key, childTable));
+		}
+		/* removes 'value'; keeps 'key' for next iteration */
+		lua_pop(L, 1);
+
+	}
+
+	LuaTable tableObj(tabs, objs);
+
+	return tableObj;
+}
+
+
 //Add a DisplayObject in the shape of a rectangle to activeObjects and then return its id
 string CreateRectangle(GLFWwindow* window, float x, float y, float width, float height, float red = 1.0f, float green = 1.0f, float blue = 1.0f) {
 	//For normalization
@@ -316,9 +400,9 @@ string CreateRectangle(GLFWwindow* window, float x, float y, float width, float 
 }
 
 //Create a new GUIBUtton object, create the Rectangle for it, then push the button object into activeButtons then return the id of the button object
-string CreateButton(GLFWwindow* window, float x, float y, float width, float height, string onClickName, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
+string CreateButton(GLFWwindow* window, float x, float y, float width, float height, string onClickName, LuaTable args, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
 {
-	GUIButton btn(x, y, width, height, red, green, blue, onClickName);
+	GUIButton btn(x, y, width, height, red, green, blue, onClickName, args);
 
 	string rect = CreateRectangle(window, x, y, width, height, red, green, blue);
 
@@ -412,10 +496,10 @@ void ModifyRectangle(GLFWwindow* window, string id, float x, float y, float widt
 }
 
 //Modifies an existing GUIButton object and its linked rectangle
-void ModifyButton(GLFWwindow* window, string id, float x, float y, float width, float height, string onClickName, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
+void ModifyButton(GLFWwindow* window, string id, float x, float y, float width, float height, string onClickName, LuaTable args, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
 {
 	//Init blank button
-	GUIButton btn(x, y, width, height, red, green, blue, onClickName);
+	GUIButton btn(x, y, width, height, red, green, blue, onClickName, args);
 
 	//Get original button using id
 	int index = 0;
@@ -438,6 +522,7 @@ void ModifyButton(GLFWwindow* window, string id, float x, float y, float width, 
 	btn.r = red;
 	btn.g = green;
 	btn.b = blue;
+	btn.args = args;
 
 	//change rectangle
 	ModifyRectangle(window, btn.rect, x, y, width, height, red, green, blue);
@@ -466,6 +551,67 @@ void ModifyText(GLFWwindow* window, string id, string text, float x, float y, fl
 
 	//update text
 	activeTextObjects[index] = txt;
+}
+
+//Delete existing DisplayObject
+void DeleteRectangle(GLFWwindow* window, string id)
+{
+	int index = 0;
+
+	string rectId = "";
+
+	for (DisplayObject g : activeObjects)
+	{
+		if (g.id == id)
+		{
+			break;
+		}
+		index++;
+	}
+
+	activeObjects.erase(activeObjects.begin() + index);
+}
+
+//Delete existing Button from ActiveButtons then delete it's rectangle
+void DeleteButton(GLFWwindow* window, string id)
+{
+	//Get original button using id
+	int index = 0;
+	
+	string rectId = "";
+
+	for (GUIButton g : activeButtons)
+	{
+		if (g.id == id)
+		{
+			rectId = g.rect;
+			break;
+		}
+		index++;
+	}
+
+	activeButtons.erase(activeButtons.begin() + index);
+
+	//change rectangle
+	DeleteRectangle(window, rectId);
+}
+
+//Modify existing TextObject object 
+void DeleteText(GLFWwindow* window, string id)
+{
+
+	//Get original text using id, and assign id if found
+	int index = 0;
+	for (TextObject t : activeTextObjects)
+	{
+		if (t.id == id)
+		{
+			break;
+		}
+		index++;
+	}
+
+	activeTextObjects.erase(activeTextObjects.begin() + index);
 }
 
 //Lua function to call internal CreateRectangle
@@ -515,7 +661,10 @@ int lua_CreateButton(lua_State* L)
 	float r = (float)lua_tonumber(L, 6);
 	float g = (float)lua_tonumber(L, 7);
 	float b = (float)lua_tonumber(L, 8);
-	string id = CreateButton(window, x, y, width, height, clickEvent, r, g, b);
+
+	LuaTable args = getLuaTable(L, 9);
+
+	string id = CreateButton(window, x, y, width, height, clickEvent, args, r, g, b);
 
 	//Return id to lua
 	lua_pushstring(L, id.c_str());
@@ -535,7 +684,9 @@ int lua_ModifyButton(lua_State* L)
 	float g = (float)lua_tonumber(L, 8);
 	float b = (float)lua_tonumber(L, 9);
 
-	ModifyButton(window, id, x, y, width, height, clickEvent, r, g, b);
+	LuaTable args = getLuaTable(L, 10);
+
+	ModifyButton(window, id, x, y, width, height, clickEvent, args, r, g, b);
 
 	return 0;
 }
@@ -553,6 +704,8 @@ int lua_ModifyRectangle(lua_State* L)
 	float b = (float)lua_tonumber(L, 8);
 
 	ModifyRectangle(window, objectID, x, y, width, height, r, g, b);
+
+
 
 	return 0;
 }
@@ -573,8 +726,35 @@ int lua_ModifyText(lua_State* L)
 	return 0;
 }
 
-//Init LuaInterface in the global so that other scripts can use it
-LuaInterface l;
+//Lua function to call internal DeleteButton
+int lua_DeleteButton(lua_State* L)
+{
+	string id = (string)lua_tostring(L, 1);
+
+	DeleteButton(window, id);
+
+	return 0;
+}
+
+//Lua function to call internal DeleteRectangle
+int lua_DeleteRectangle(lua_State* L)
+{
+	string id = (string)lua_tostring(L, 1);
+
+	DeleteRectangle(window, id);
+
+	return 0;
+}
+
+//Lua function to call internal DeleteText
+int lua_DeleteText(lua_State* L)
+{
+	string id = (string)lua_tostring(L, 1);
+
+	DeleteText(window, id);
+
+	return 0;
+}
 
 int initText() {
 	FT_Library ft;
@@ -671,6 +851,9 @@ int main()
 	l.AddFunction("ModifyRectangle", lua_ModifyRectangle);
 	l.AddFunction("ModifyButton", lua_ModifyButton);
 	l.AddFunction("ModifyText", lua_ModifyText);
+	l.AddFunction("DeleteRectangle", lua_DeleteRectangle);
+	l.AddFunction("DeleteButton", lua_DeleteButton);
+	l.AddFunction("DeleteText", lua_DeleteText);
 
 	//Run the lua
 	l.CheckLua(l.L, luaL_dofile(l.L, "Scripts/Main.lua"));
