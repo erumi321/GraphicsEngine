@@ -10,9 +10,9 @@ class TextObject
 {
 	public:
 		string text;
-		float x, y, scale;
+		float x, y, width, scale;
 		float r, g, b;
-		string id;
-		TextObject(string text, float x, float y, float scale, float r, float g, float b);
+		int id;
+		TextObject(string text, float x, float y, float width, float scale, float r, float g, float b);
 };
 #endif

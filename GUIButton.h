@@ -19,12 +19,12 @@ class GUIButton
 	public:
 		//Event
 		std::string onClickName;
-		std::string id;
+		int id;
 		LuaTable args;
 
 		//Functions
 		GUIButton(float inpX, float inpY, float inpWidth, float inpHeight, float inpR, float inpG, float inpB, std::string inpOnClick, LuaTable args);
-		void CheckClick(float inpX, float inpY);
+		bool CheckClick(float inpX, float inpY);
 		float GetDrawParameters();
 
 		//All normalized rendering values
@@ -37,7 +37,7 @@ class GUIButton
 		float g;
 		float b;
 
-		std::string rect;
+		int rect;
 
 	private:
 		void DoClick();

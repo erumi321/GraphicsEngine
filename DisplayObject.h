@@ -13,7 +13,7 @@ class DisplayObject
 		vector<GLfloat> vertices;
 		vector<GLuint> indices;
 		int indexPoints;
-		string id;
+		int id;
 		DisplayObject(vector<GLfloat> _vertices, vector<GLuint> _indices, int _indexPoint);
 };
 #endif

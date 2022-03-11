@@ -156,6 +156,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="stb.cpp" />
+    <ClCompile Include="TextfieldObject.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VAO.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="LuaObject.h" />
     <ClInclude Include="LuaTable.h" />
     <ClInclude Include="shaderClass.h" />
+    <ClInclude Include="TextfieldObject.h" />
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VAO.h" />

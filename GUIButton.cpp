@@ -18,12 +18,14 @@ GUIButton::GUIButton(float x, float y, float width, float height, float r, float
 	, args(args){
 }
 
-void GUIButton::CheckClick(float inpX, float inpY)
+bool GUIButton::CheckClick(float inpX, float inpY)
 {
 	if (inpX >= x - (width / 2) && inpX <= x + (width / 2) && inpY >= y - (height / 2) && inpY <= y + (height / 2))
 	{
 		DoClick();
+		return true;
 	}
+	return false;
 }
 
 extern "C"
@@ -136,7 +138,7 @@ void GUIButton::DoClick()
 		lua_setfield(l.L, -2, "B");
 		lua_pushstring(l.L, onClickName.c_str());
 		lua_setfield(l.L, -2, "onClick");
-		lua_pushstring(l.L, id.c_str());
+		lua_pushnumber(l.L, id);
 		lua_setfield(l.L, -2, "ID");
 
 		//Base Arg table
@@ -145,34 +147,6 @@ void GUIButton::DoClick()
 		tableCreation(l.L, args);
 
 		lua_setfield(l.L, -2, "Args");
-
-		/*// create subtable "files"
-		lua_newtable(l.L);
-
-		map<string, string>::iterator it;
-
-		//push arg values in
-		for (it = args.begin(); it != args.end(); it++)
-		{
-			if (is_number(it->first))
-			{
-				lua_pushnumber(l.L, std::stof(it->first));
-			}
-			else {
-				lua_pushstring(l.L, it->first.c_str());
-			}
-			if (is_number(it->second))
-			{
-				lua_pushnumber(l.L, std::stof(it->second));
-			}
-			else {
-				lua_pushstring(l.L, it->second.c_str());
-			}
-			lua_settable(l.L, -3);
-		}
-
-		lua_setfield(l.L, -2, "Args");
-		*/
 
 		//call function passing it the table as the only argument
 		l.CheckLua(l.L, lua_pcall(l.L, 1, 0, 0));
