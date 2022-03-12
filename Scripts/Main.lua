@@ -14,6 +14,8 @@
 --DeleteButton(id)
 --DeleteText(id)
 
+--GetTextfieldValue(id), returns string of value inside textfield with passed in id
+
 --[[all button functions are passed a button object which is a table with the values
 {
 	X = x position of button,
@@ -59,13 +61,14 @@ local btn1Args = {
 	R = 0.4,
 	G = 0.4,
 	B = 0.4,
-	Args = {"hehe"}
+	Args = {}
 }
+
+
 
 local btn = createButton(btn1Args)
 
 
-MyPrint(btn)
 
 local options = {
 	{Text = "New"},
@@ -74,8 +77,46 @@ local options = {
 	{Text = "Save"},
 }
 
-function OpenDropdown(btn)
+local windowWidth = 1920
+local windowHeight = 1080
 
+local textField = createTextfield({
+	Text = "",
+	X = windowWidth / 2,
+	Y = windowHeight / 2,
+	Width = windowWidth / 4,
+	Height = windowHeight / 4,
+	FontSize = 24,
+	BackingColor = {
+		R = 0.35,
+		G = 0.35,
+		B = 0.35
+	},
+	TextColor = {
+		R = 1.0,
+		G = 1.0,
+		B = 1.0
+	}
+})
+local btn2Args = {
+	X = 3 * windowWidth / 4 + 100,
+	Y = windowHeight / 2,
+	Width = 400,
+	Height = 50,
+	onClick = "GetTextstuff",
+	R = 0.4,
+	G = 0.4,
+	B = 0.4,
+	Args = {textField}
+}
+local btn2 = createButton(btn2Args)
+
+function GetTextstuff(btn)
+	local textStuff = GetTextfieldValue(btn.Args[1])
+	MyPrint("Stuff: " .. textStuff)
+end
+
+function OpenDropdown(btn)
 	local newBtnArgs = btn;
 
 	newBtnArgs.onClick = "CloseDropdown"
@@ -101,7 +142,7 @@ function OpenDropdown(btn)
 
 	modifyButton(btn.ID, newBtnArgs)
 
-end
+end 
 
 function CloseDropdown(btn)
 	

@@ -337,6 +337,9 @@ void renderObjects(Shader shaderProgram)
 	EBO1.Delete();
 }
 
+
+#pragma endregion Geometry Rendering
+
 //Recursivly loop through a lua table and convert it to c++ objects of LuaTable containing LuaObject
 LuaTable getLuaTable(lua_State* L, int index)
 {
@@ -394,8 +397,6 @@ LuaTable getLuaTable(lua_State* L, int index)
 
 	return tableObj;
 }
-
-#pragma endregion Geometry Rendering
 
 #pragma region Modify Object Functions
 
@@ -518,7 +519,7 @@ void ModifyButton(GLFWwindow* window, int id, float x, float y, float width, flo
 	//Init new button
 	GUIButton btn(newX, newY, newWidth, newHeight, newR, newG, newB, newOnClickName, newArgs);
 
-	btn.rect = activeButtons[g].rect;
+	btn.rect = activeButtons[index].rect;
 
 	//change rectangle
 	ModifyRectangle(window, btn.rect, x, y, width, height, newR, newG, newB);
@@ -888,6 +889,28 @@ int lua_DeleteTextfield(lua_State* L)
 
 #pragma endregion Lua Delete Functions
 
+#pragma region Misc Lua Functions
+int lua_GetTextfieldValue(lua_State* L)
+{
+	float id = (float)lua_tonumber(L, 1);
+
+	string text = "";
+
+	for (TextfieldObject o : activeTextfieldObjects)
+	{
+		if (o.id == id)
+		{
+			text = o.text;
+			break;
+		}
+	}
+
+	lua_pushstring(L, text.c_str());
+	//Return value to lua
+	return 1;
+}
+#pragma endregion Misc Lua Functions
+
 //Debug Purposes
 void myPrint(string s)
 {
@@ -1206,34 +1229,9 @@ void RenderText(Shader& s, VAO VAO, VBO VBO, int textID, std::string text, float
 	int cursorIndex = text.length() + cursorOffset - 1;
 	if (lines[0] == "")
 	{
-		baseY += face->height / 16 * scale;
 		Character ch = Characters[*" "];
-		//get xPos and offset it by xOffset calculated before so that text is centered
-		float xpos = (baseX + ch.Bearing.x * scale);
-		//with how this system works y(0) is at the bottom, of we just reverse it to be at the top like everything else
-		float ypos = (screenHeight - baseY) - (ch.Size.y - ch.Bearing.y) * scale;
-
-		float w = ch.Size.x * scale;
-		float h = ch.Size.y * scale;
-		// update VBO for each character
-		float vertices[6][4] = {
-			{ xpos,     ypos + h,   0.0f, 0.0f },
-			{ xpos,     ypos,       0.0f, 1.0f },
-			{ xpos + w, ypos,       1.0f, 1.0f },
-
-			{ xpos,     ypos + h,   0.0f, 0.0f },
-			{ xpos + w, ypos,       1.0f, 1.0f },
-			{ xpos + w, ypos + h,   1.0f, 0.0f }
-		};
-		// render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-		// update content of VBO memory
-		VBO.Bind();
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-		VBO.Unbind();
-		// render quad
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+		cursorX += (ch.Advance >> 6) * scale;
+		baseY += face->height / 128 * scale;
 	}
 	else
 	{
@@ -1243,17 +1241,24 @@ void RenderText(Shader& s, VAO VAO, VBO VBO, int textID, std::string text, float
 			baseX = x;
 			for (c = line.begin(); c != line.end(); c++)
 			{
-
-				//if the 1st character isn't a space add a space to give some spacing
 				if (c == line.begin())
 				{
-					baseY += face->height / 48 * scale;
+					if (currentIndex != 0)
+					{
+						baseY += face->height / 48 * scale;
+					}
+					else {
+
+						baseY += face->height / 128 * scale;
+					}
+					if (c[0] != *" ")
+					{
+						Character spa = Characters[*" "];
+						baseX += (spa.Advance >> 6) * scale;
+					}
 				}
-				if (c == line.begin() && c[0] != *" ")
-				{
-					Character spa = Characters[*" "];
-					baseX += (spa.Advance >> 6) * scale;
-				}
+
+	
 				Character ch = Characters[*c];
 				//get xPos and offset it by xOffset calculated before so that text is centered
 				float xpos = (baseX + ch.Bearing.x * scale);
@@ -1300,7 +1305,7 @@ void RenderText(Shader& s, VAO VAO, VBO VBO, int textID, std::string text, float
 		{
 			if (currentCursorID == -1)
 			{
-				currentCursorID = CreateRectangle(window, cursorX, baseY - (face->height * (0.01076680672 * scale)), face->height * scale / 1024, face->height / 32 * scale, 1.0, 1.0, 1.0);
+				currentCursorID = CreateRectangle(window, cursorX, baseY - (face->height * scale / 96), face->height * scale / (32 * 32), face->height / 48 * scale, 1.0, 1.0, 1.0);
 			}
 			else
 			{
@@ -1398,7 +1403,9 @@ int main()
 	l.AddFunction("DeleteButton", lua_DeleteButton);
 	l.AddFunction("DeleteText", lua_DeleteText);
 	l.AddFunction("DeleteTextfield", lua_DeleteTextfield);
+	
 	l.AddFunction("MyPrint", lua_myPrint);
+	l.AddFunction("GetTextfieldValue", lua_GetTextfieldValue);
 
 	//Run the lua
 	l.CheckLua(l.L, luaL_dofile(l.L, "Scripts/Main.lua"));

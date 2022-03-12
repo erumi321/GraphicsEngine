@@ -20,7 +20,7 @@ GUIButton::GUIButton(float x, float y, float width, float height, float r, float
 
 bool GUIButton::CheckClick(float inpX, float inpY)
 {
-	if (inpX >= x - (width / 2) && inpX <= x + (width / 2) && inpY >= y - (height / 2) && inpY <= y + (height / 2))
+	if (inpX >= x - (width / 2) && inpX <= x + (width / 2) && inpY >= y - height && inpY <= y + height )
 	{
 		DoClick();
 		return true;
@@ -73,7 +73,21 @@ void tableCreation(lua_State* L, LuaTable currentTable)
 		LuaObject value = it->second;
 
 		//push key
-		lua_pushstring(L, key.c_str());
+		if (is_number(key))
+		{
+			// object from the class stringstream
+			stringstream num(key);
+
+			// The object has the value 12345 and stream
+			// it to the integer x
+			int x = 0;
+			num >> x;
+			lua_pushnumber(L, x);
+		}
+		else 
+		{
+			lua_pushstring(L, key.c_str());
+		}
 
 		//push value as correct type
 		switch (value.type)
